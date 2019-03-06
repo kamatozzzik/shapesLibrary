@@ -1,0 +1,27 @@
+{
+	"name": "shapeslibrary",
+	"version": "1.0.0",
+	"description": "��#\u0000 \u0000s\u0000h\u0000a\u0000p\u0000e\u0000s\u0000L\u0000i\u0000b\u0000r\u0000a\u0000r\u0000y\u0000\r\u0000 \u0000",
+	"main": "index.js",
+	"dependencies": {
+		"webpack": "^4.29.6"
+	},
+	"devDependencies": {
+		"webpack-cli": "^3.2.3",
+		"webpack-dev": "^1.1.1"
+	},
+	"scripts": {
+		"dev": "webpack --mode development",
+		"build": "webpack --mode production"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/kamatozzzik/shapesLibrary.git"
+	},
+	"author": "yavorovsky",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/kamatozzzik/shapesLibrary/issues"
+	},
+	"homepage": "https://github.com/kamatozzzik/shapesLibrary#readme"
+}
