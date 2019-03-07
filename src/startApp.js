@@ -1,4 +1,4 @@
-import { shapeMap, styles } from './js/Data';
+import { shapeMap, lineMap, styles } from './js/Data';
 import { App } from './js/App';
 
 const canvasNode = document.querySelector('#main-canvas');
@@ -50,4 +50,28 @@ function handlerResize() {
 	canvasNode.height = window.innerHeight;
 }
 
-console.log(shapeMap.circle);
+///// LINES
+
+function createLine(LineClass, position) {
+	const line = new LineClass(position);
+
+	line.setStrokeColor(styles.currentStrokeColor);
+
+	return line;
+}
+
+document.addEventListener('click', e => {
+	const line = e.target.dataset.line;
+
+	if (shape && shapeMap.hasOwnProperty(shape)) {
+		app.setCurrentShape(createShape(shapeMap[shape]));
+	}
+});
+
+canvasNode.addEventListener('click', e => {
+	if (app.currentLine) {
+		const lineClass = app.currentLine.constructor;
+		app.addLine(app.currentLine);
+		app.setCurrentLine(createLine(lineClass, { x: e.clientX, y: e.clientY }));
+	}
+});

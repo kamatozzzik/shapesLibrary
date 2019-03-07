@@ -15,7 +15,7 @@ export class App {
 	}
 
 	addLine(line) {
-		if (line && !this.shapes.includes(line)) {
+		if (line && !this.lines.includes(line)) {
 			this.lines.push(line);
 		}
 	}
@@ -41,11 +41,19 @@ export class App {
 		}
 	}
 
-	renderLine(line) {}
+	renderLine(line) {
+		this.ctx.save();
+		line.render(this.ctx);
+		this.ctx.restore();
+	}
 
 	render() {
 		requestAnimationFrame(() => {
 			this.clear();
+
+			this.lines.forEach(line => {
+				this.renderLine(line);
+			});
 
 			this.shapes.forEach(shape => {
 				this.renderShape(shape);
