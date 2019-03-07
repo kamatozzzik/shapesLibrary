@@ -1,5 +1,15 @@
 import { Shape } from './Shape';
-let shape = new Shape();
+
 export class Circle extends Shape {
-	constructor() {}
+	render(ctx) {
+		ctx.beginPath();
+
+		ctx.arc(0, 0, this.size / 2, 0, 2 * Math.PI, false);
+
+		// ctx.fillStyle = this.fillColor;
+		// ctx.fill();
+		ctx.lineWidth = this.strokeWidth;
+		ctx.strokeStyle = this.strokeColor;
+		ctx.stroke();
+	}
 }
