@@ -4,6 +4,7 @@ export class App {
 		this.ctx = canvas.getContext('2d');
 		this.shapes = [];
 		this.lines = [];
+		this.shapePositions = [];
 		this.render();
 	}
 
