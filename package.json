@@ -8,10 +8,11 @@
 	},
 	"devDependencies": {
 		"webpack-cli": "^3.2.3",
-		"webpack-dev": "^1.1.1"
+		"webpack-dev": "^1.1.1",
+		"webpack-dev-server": "^3.2.1"
 	},
 	"scripts": {
-		"dev": "webpack --mode development",
+		"dev": "webpack-dev-server --mode production --open",
 		"build": "webpack --mode production"
 	},
 	"repository": {

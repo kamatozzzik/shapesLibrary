@@ -1,5 +1,5 @@
 import { Circle } from './Circle';
-import { Square } from './Square';
+import { Square } from './Shapes/Square';
 
 export const shapeMap = {
 	circle: Circle,
@@ -9,7 +9,7 @@ export const shapeMap = {
 let currentFillColor = '#000';
 let currentStrokeColor = '#000';
 let currentStrokeWidth = 1;
-let currentSize = 20;
+let currentSize = 100;
 
 export const styles = {
 	currentFillColor: currentFillColor,

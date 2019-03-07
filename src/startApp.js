@@ -2,7 +2,6 @@ import { shapeMap, styles } from './js/Data';
 import { App } from './js/App';
 
 const canvasNode = document.querySelector('#main-canvas');
-
 const app = new App(canvasNode);
 
 canvasNode.addEventListener('mousemove', e => {
@@ -24,18 +23,31 @@ document.addEventListener('click', e => {
 
 	if (shape && shapeMap.hasOwnProperty(shape)) {
 		app.setCurrentShape(createShape(shapeMap[shape]));
-		console.log('ok');
+	}
+});
+
+document.addEventListener('keydown', e => {
+	if (e.keyCode === 27) {
+		app.setCurrentShape(null);
 	}
 });
 
 function createShape(ShapeClass, x, y) {
 	const shape = new ShapeClass(x, y, styles.currentSize);
 
-	// shape.setFillColor(styles.currentFillColor);
+	shape.setFillColor(styles.currentFillColor);
 	shape.setStrokeColor(styles.currentStrokeColor);
 	shape.setStrokeColor(styles.currentStrokeColor);
 
 	return shape;
+}
+
+window.addEventListener('load', handlerResize);
+window.addEventListener('resize', handlerResize);
+
+function handlerResize() {
+	canvasNode.width = window.innerWidth;
+	canvasNode.height = window.innerHeight;
 }
 
 console.log(shapeMap.circle);

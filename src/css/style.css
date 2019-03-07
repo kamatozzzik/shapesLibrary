@@ -13,13 +13,29 @@ body {
 	right: 0;
 }
 
-.shape-list {
+.shape-list,
+.line-list,
+.arrow-list {
 	position: absolute;
 	right: 0;
 	top: 20px;
 	background-color: aqua;
+	font-size: 30px;
 }
 
-.shape {
+.line-list {
+	right: 0;
+	top: 100px;
+}
+
+.arrow-list {
+	right: 0;
+	top: 180px;
+	display: flex;
+	flex-direction: column;
+}
+
+.shape,
+.line {
 	cursor: pointer;
 }

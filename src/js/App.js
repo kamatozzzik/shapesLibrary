@@ -3,6 +3,7 @@ export class App {
 		this.canvas = canvas;
 		this.ctx = canvas.getContext('2d');
 		this.shapes = [];
+		this.lines = [];
 		this.render();
 	}
 
@@ -12,8 +13,18 @@ export class App {
 		}
 	}
 
+	addLine(line) {
+		if (line && !this.shapes.includes(line)) {
+			this.lines.push(line);
+		}
+	}
+
 	setCurrentShape(shape) {
 		this.currentShape = shape;
+	}
+
+	setCurrentLine(line) {
+		this.currentLine = line;
 	}
 
 	clear() {
@@ -29,6 +40,8 @@ export class App {
 		}
 	}
 
+	renderLine(line) {}
+
 	render() {
 		requestAnimationFrame(() => {
 			this.clear();
@@ -39,6 +52,10 @@ export class App {
 
 			if (this.currentShape) {
 				this.renderShape(this.currentShape);
+			}
+
+			if (this.currentLine) {
+				this.renderLine(this.currentLine);
 			}
 
 			this.render();
