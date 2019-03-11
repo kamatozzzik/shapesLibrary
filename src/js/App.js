@@ -4,8 +4,22 @@ export class App {
 		this.ctx = canvas.getContext('2d');
 		this.shapes = [];
 		this.lines = [];
-		this.shapePositions = [];
+		this.positions = [];
 		this.render();
+	}
+
+	addPosition(x, y) {
+		this.positions.push({ x, y });
+	}
+
+	checkPositions(x, y, distance) {
+		if (this.positions.length > 0)
+			for (let pos of this.positions) {
+				if ((2 * distance) ** 2 <= (x - pos.x) ** 2 + (y - pos.y) ** 2)
+					continue;
+				return false;
+			}
+		return true;
 	}
 
 	addShape(shape) {
