@@ -1,9 +1,14 @@
 import { Circle } from './Shapes/Circle';
 import { Square } from './Shapes/Square';
+import { Vector } from './Lines/Vector';
 
 export const shapeMap = {
 	circle: Circle,
 	square: Square,
+};
+
+export const lineMap = {
+	vector: Vector,
 };
 
 let currentFillColor = '#000';

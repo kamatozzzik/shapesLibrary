@@ -1,4 +1,4 @@
-import { shapeMap, styles } from './js/Data';
+import { shapeMap, lineMap, styles } from './js/Data';
 import { App } from './js/App';
 
 const canvasNode = document.querySelector('#main-canvas');
@@ -59,26 +59,29 @@ function handlerResize() {
 
 ///////////////------------------ LINES -------------------------////////////
 
-// function createLine(LineClass, position) {
-// 	const line = new LineClass(position);
+function createLine(LineClass, fromX, fromY) {
+	const line = new LineClass(fromX, fromY);
 
-// 	line.setStrokeColor(styles.currentStrokeColor);
+	line.setStrokeColor(styles.currentStrokeColor);
+	line.setStrokeWidth(styles.currentStrokeWidth);
+	return line;
+}
 
-// 	return line;
-// }
+document.addEventListener('click', e => {
+	const line = e.target.dataset.line;
+	if (line && lineMap.hasOwnProperty(line)) {
+		app.setCurrentLine(createLine(lineMap[line]));
+	}
+});
 
-// document.addEventListener('click', e => {
-// 	const line = e.target.dataset.line;
-
-// 	if (shape && shapeMap.hasOwnProperty(shape)) {
-// 		app.setCurrentShape(createShape(shapeMap[shape]));
-// 	}
-// });
-
-// canvasNode.addEventListener('click', e => {
-// 	if (app.currentLine) {
-// 		const lineClass = app.currentLine.constructor;
-// 		app.addLine(app.currentLine);
-// 		app.setCurrentLine(createLine(lineClass, { x: e.clientX, y: e.clientY }));
-// 	}
-// });
+canvasNode.addEventListener('click', e => {
+	if (app.currentLine) {
+		if (app.currentLine.lineFromPos.length > app.currentLine.lineToPos.length) {
+			app.currentLine.addToPos(e.clientX, e.clientY);
+			app.currentLine.setToPosition(e.clientX, e.clientY);
+		} else {
+			app.currentLine.addFromPos(e.clientX, e.clientY);
+			app.currentLine.setFromPosition(e.clientX, e.clientY);
+		}
+	}
+});

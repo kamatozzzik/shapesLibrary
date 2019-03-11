@@ -5,6 +5,7 @@ export class App {
 		this.shapes = [];
 		this.lines = [];
 		this.positions = [];
+
 		this.render();
 	}
 
@@ -56,9 +57,7 @@ export class App {
 	}
 
 	renderLine(line) {
-		this.ctx.save();
 		line.render(this.ctx);
-		this.ctx.restore();
 	}
 
 	render() {
