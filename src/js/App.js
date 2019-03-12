@@ -5,12 +5,21 @@ export class App {
 		this.shapes = [];
 		this.lines = [];
 		this.positions = [];
-
+		this.lineToPos = [];
+		this.lineFromPos = [];
 		this.render();
 	}
 
 	addPosition(x, y) {
 		this.positions.push({ x, y });
+	}
+
+	addFromPos(x, y) {
+		this.lineFromPos.push({ fromX: x, fromY: y });
+	}
+
+	addToPos(x, y) {
+		this.lineToPos.push({ toX: x, toY: y });
 	}
 
 	checkPositions(x, y, distance) {

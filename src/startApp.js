@@ -59,8 +59,8 @@ function handlerResize() {
 
 ///////////////------------------ LINES -------------------------////////////
 
-function createLine(LineClass, fromX, fromY) {
-	const line = new LineClass(fromX, fromY);
+function createLine(LineClass) {
+	const line = new LineClass();
 
 	line.setStrokeColor(styles.currentStrokeColor);
 	line.setStrokeWidth(styles.currentStrokeWidth);
@@ -76,12 +76,18 @@ document.addEventListener('click', e => {
 
 canvasNode.addEventListener('click', e => {
 	if (app.currentLine) {
-		if (app.currentLine.lineFromPos.length > app.currentLine.lineToPos.length) {
-			app.currentLine.addToPos(e.clientX, e.clientY);
-			app.currentLine.setToPosition(e.clientX, e.clientY);
+		if (app.lineFromPos.length > app.lineToPos.length) {
+			app.addToPos(e.clientX, e.clientY);
+			app.currentLine.setToPos(e.clientX, e.clientY);
+			let lineClass = app.currentLine.constructor;
+			app.lines.push(app.currentLine);
+			app.setCurrentLine(createLine(lineClass));
+			console.log('Установили позицию to');
 		} else {
-			app.currentLine.addFromPos(e.clientX, e.clientY);
-			app.currentLine.setFromPosition(e.clientX, e.clientY);
+			app.addFromPos(e.clientX, e.clientY);
+			app.currentLine.setFromPos(e.clientX, e.clientY);
+			console.log('Установили позицию from');
+			console.log(app.lines);
 		}
 	}
 });
