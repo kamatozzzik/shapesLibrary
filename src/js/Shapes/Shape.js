@@ -25,8 +25,6 @@ export class Shape {
 		this.strokeWidth = width;
 	}
 
-	checkPosition() {}
-
 	canRender() {
 		return (
 			Number.isFinite(this.size) &&

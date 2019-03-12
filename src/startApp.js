@@ -1,16 +1,19 @@
-import { shapeMap, lineMap, styles } from './js/Data';
+import { shapeMap, lineMap, arrowMap, styles } from './js/Data';
 import { App } from './js/App';
 
 const canvasNode = document.querySelector('#main-canvas');
+const arrowList = document.querySelector('.arrow-list');
 const app = new App(canvasNode);
 
 // Отрисовка фигуры возле курсора
 canvasNode.addEventListener('mousemove', e => {
 	if (app.currentShape) {
 		app.currentShape.setPosition(e.clientX, e.clientY);
-	}
-	if (app.currentLine) {
+	} else if (app.currentLine) {
 		app.currentLine.setToPos(e.clientX, e.clientY);
+		if (app.currentArrow) {
+			app.currentArrow.setPos(e.clientX, e.clientY);
+		}
 	}
 });
 
@@ -28,11 +31,19 @@ canvasNode.addEventListener('click', e => {
 		app.setCurrentShape(createShape(shapeClass, currentX, currentY));
 	}
 
-	if (app.currentLine) {
+	if (
+		app.currentLine &&
+		!app.checkPositions(currentX, currentY, styles.currentDistance / 4)
+	) {
 		if (app.lineFromPos.length > app.lineToPos.length) {
 			app.addToPos(currentX, currentY);
 			app.currentLine.setToPos(currentX, currentY);
-
+			if (app.currentArrow) {
+				app.currentArrow.setPos(currentX, currentY);
+				const arrowClass = app.currentArrow.constructor;
+				app.addArrow(app.currentArrow);
+				app.setCurrentArrow(createArrow(arrowClass, currentX, currentY));
+			}
 			let lineClass = app.currentLine.constructor;
 			app.lines.push(app.currentLine);
 			app.setCurrentLine(createLine(lineClass));
@@ -57,6 +68,15 @@ document.addEventListener('click', e => {
 	}
 });
 
+/////////////////------------------ Arrows -------------------////////////////
+arrowList.addEventListener('change', e => {
+	const arrow = e.target.value;
+	if (arrow && app.currentLine && arrowMap.hasOwnProperty(arrow)) {
+		app.setCurrentArrow(createArrow(arrowMap[arrow]));
+		console.log(app.currentArrow);
+	}
+});
+
 ///////////////------------------ Shapes-------------------------////////////
 function createShape(ShapeClass, x, y) {
 	const shape = new ShapeClass(x, y, styles.currentSize);
@@ -73,6 +93,15 @@ function createLine(LineClass) {
 	line.setStrokeColor(styles.currentStrokeColor);
 	line.setStrokeWidth(styles.currentStrokeWidth);
 	return line;
+}
+
+function createArrow(ArrowClass, x, y) {
+	const arrow = new ArrowClass(x, y);
+
+	arrow.setStrokeColor(styles.currentFontColor);
+	arrow.setFillColor(styles.currentFontColor);
+
+	return arrow;
 }
 
 // Сброс текущей фигуры

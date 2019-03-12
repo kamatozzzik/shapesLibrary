@@ -4,10 +4,11 @@ export class App {
 		this.ctx = canvas.getContext('2d');
 		this.shapes = [];
 		this.lines = [];
+		this.arrows = [];
 		this.positions = [];
 		this.lineToPos = [];
 		this.lineFromPos = [];
-		this.render();
+		this._render();
 	}
 
 	addPosition(x, y) {
@@ -44,6 +45,12 @@ export class App {
 		}
 	}
 
+	addArrow(arrow) {
+		if (arrow && !this.arrows.includes(arrow)) {
+			this.arrows.push(arrow);
+		}
+	}
+
 	setCurrentShape(shape) {
 		this.currentShape = shape;
 	}
@@ -52,11 +59,15 @@ export class App {
 		this.currentLine = line;
 	}
 
+	setCurrentArrow(arrow) {
+		this.currentArrow = arrow;
+	}
+
 	clear() {
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 	}
 
-	renderShape(shape) {
+	_renderShape(shape) {
 		if (shape.canRender()) {
 			this.ctx.save();
 			this.ctx.translate(shape.x, shape.y);
@@ -65,31 +76,42 @@ export class App {
 		}
 	}
 
-	renderLine(line) {
+	_renderLine(line) {
 		line.render(this.ctx);
 	}
 
-	render() {
+	_renderArrow(arrow) {
+		arrow.render(this.ctx);
+	}
+
+	_render() {
 		requestAnimationFrame(() => {
 			this.clear();
 
+			this.shapes.forEach(shape => {
+				this._renderShape(shape);
+			});
 			this.lines.forEach(line => {
-				this.renderLine(line);
+				this._renderLine(line);
 			});
 
-			this.shapes.forEach(shape => {
-				this.renderShape(shape);
+			this.arrows.forEach(arrow => {
+				this._renderArrow(arrow);
 			});
 
 			if (this.currentShape) {
-				this.renderShape(this.currentShape);
+				this._renderShape(this.currentShape);
 			}
 
 			if (this.currentLine) {
-				this.renderLine(this.currentLine);
+				this._renderLine(this.currentLine);
 			}
 
-			this.render();
+			if (this.currentArrow) {
+				this._renderArrow(this.currentArrow);
+			}
+
+			this._render();
 		});
 	}
 }
