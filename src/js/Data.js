@@ -10,6 +10,7 @@ export const shapeMap = {
 };
 
 export const arrowMap = {
+	none: null,
 	bold: Bold,
 	thick: Thick,
 };

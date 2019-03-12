@@ -2,10 +2,11 @@ import { shapeMap, lineMap, arrowMap, styles } from './js/Data';
 import { App } from './js/App';
 
 const canvasNode = document.querySelector('#main-canvas');
-const arrowList = document.querySelector('.arrow-list');
+const fromOption = document.querySelector('#from');
+const toOption = document.querySelector('#to');
 const app = new App(canvasNode);
 
-// Отрисовка фигуры возле курсора
+/////////////////////// ------------------ MOVING THE FIGURE WITH CURSOR ---------------///////////
 canvasNode.addEventListener('mousemove', e => {
 	if (app.currentShape) {
 		app.currentShape.setPosition(e.clientX, e.clientY);
@@ -17,7 +18,7 @@ canvasNode.addEventListener('mousemove', e => {
 	}
 });
 
-// Установка фигур на экране
+///////////////////////------------------- SETTING THE FIGURE ON SCREEN --------------- //////////////
 canvasNode.addEventListener('click', e => {
 	let currentX = e.clientX,
 		currentY = e.clientY;
@@ -38,23 +39,42 @@ canvasNode.addEventListener('click', e => {
 		if (app.lineFromPos.length > app.lineToPos.length) {
 			app.addToPos(currentX, currentY);
 			app.currentLine.setToPos(currentX, currentY);
-			if (app.currentArrow) {
-				app.currentArrow.setPos(currentX, currentY);
-				const arrowClass = app.currentArrow.constructor;
-				app.addArrow(app.currentArrow);
-				app.setCurrentArrow(createArrow(arrowClass, currentX, currentY));
-			}
+
 			let lineClass = app.currentLine.constructor;
 			app.lines.push(app.currentLine);
 			app.setCurrentLine(createLine(lineClass));
+
+			let selectedOption = fromOption.options[fromOption.selectedIndex].value;
+			let ArrowClass = arrowMap[selectedOption];
+			setDirection(ArrowClass, currentX, currentY);
+			app.setCurrentArrow(createArrow(ArrowClass, currentX, currentY));
 		} else {
 			app.addFromPos(currentX, currentY);
 			app.currentLine.setFromPos(currentX, currentY);
+
+			let selectedOption = toOption.options[toOption.selectedIndex].value;
+			let ArrowClass = arrowMap[selectedOption];
+
+			setDirection(ArrowClass, currentX, currentY);
 		}
 	}
 });
 
-// Установка фигуры
+////////////////////////////------------ CHANGE CLASS -----------------//////////////
+
+function setDirection(ArrowClass, x, y) {
+	if (app.currentArrow) {
+		app.currentArrow.setPos(x, y);
+		app.addArrow(app.currentArrow);
+		app.setCurrentArrow(createArrow(ArrowClass, x, y));
+	} else {
+		let selectedOption = toOption.options[toOption.selectedIndex].value;
+		ArrowClass = arrowMap[selectedOption];
+		app.setCurrentArrow(createArrow(ArrowClass, x, y));
+	}
+}
+
+///////////////////////---------------SETTING THE FIGURE ------------------/////////////////
 document.addEventListener('click', e => {
 	const shape = e.target.dataset.shape;
 	if (shape && shapeMap.hasOwnProperty(shape)) {
@@ -69,11 +89,10 @@ document.addEventListener('click', e => {
 });
 
 /////////////////------------------ Arrows -------------------////////////////
-arrowList.addEventListener('change', e => {
+fromOption.addEventListener('change', e => {
 	const arrow = e.target.value;
 	if (arrow && app.currentLine && arrowMap.hasOwnProperty(arrow)) {
 		app.setCurrentArrow(createArrow(arrowMap[arrow]));
-		console.log(app.currentArrow);
 	}
 });
 
@@ -96,23 +115,26 @@ function createLine(LineClass) {
 }
 
 function createArrow(ArrowClass, x, y) {
-	const arrow = new ArrowClass(x, y);
+	if (ArrowClass) {
+		const arrow = new ArrowClass(x, y);
 
-	arrow.setStrokeColor(styles.currentFontColor);
-	arrow.setFillColor(styles.currentFontColor);
+		arrow.setStrokeColor(styles.currentFontColor);
+		arrow.setFillColor(styles.currentFontColor);
 
-	return arrow;
+		return arrow;
+	} else return null;
 }
 
-// Сброс текущей фигуры
+/////////////////////////////////////--------- RESET -------------- ////////////////////////
 document.addEventListener('keydown', e => {
 	if (e.keyCode === 27) {
 		app.setCurrentShape(null);
 		app.setCurrentLine(null);
+		app.setCurrentArrow(null);
 	}
 });
 
-// При ресайзе изменяется ширина окна canvas
+/////////////////////// ---------------- RESIZE HUNDLER --------------/////////////
 function handlerResize() {
 	canvasNode.width = window.innerWidth;
 	canvasNode.height = window.innerHeight;
